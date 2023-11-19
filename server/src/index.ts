@@ -2,8 +2,8 @@ require('dotenv').config()
 import express, { Express, NextFunction, Request, Response } from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import morgan from 'morgan'
 import { connectDB } from './utils/connectDB'
+import authRoutes from './routes/auth.route'
 
 const app: Express = express()
 const port = process.env.PORT
@@ -17,6 +17,8 @@ app.use(
     origin: ['http://localhost:3000'],
   })
 )
+
+app.use('/api/auth', authRoutes)
 
 app.get(
   '/api/healthcheck',
