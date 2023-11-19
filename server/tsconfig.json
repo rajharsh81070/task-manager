@@ -10,5 +10,6 @@
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "outDir": "./dist"
-  }
+  },
+  "include": ["src/**/*"]
 }

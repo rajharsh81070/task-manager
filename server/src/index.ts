@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import { connectDB } from './utils/connectDB'
 import authRoutes from './routes/auth.route'
+import taskRoutes from './routes/task.route'
+import userRouter from './routes/user.route'
 
 const app: Express = express()
 const port = process.env.PORT
@@ -19,6 +21,8 @@ app.use(
 )
 
 app.use('/api/auth', authRoutes)
+app.use('/api/tasks', taskRoutes)
+app.use('/api/users', userRouter)
 
 app.get(
   '/api/healthcheck',
