@@ -8,13 +8,14 @@ import {
 } from '../schema/task.schema'
 import {
   createTask,
+  deleteTaskById,
   filterTasksByStatusAndSearch,
   findAllTaskByUser,
   findAndUpdateTask,
-  findOneAndDelete,
   findTaskById,
 } from '../services/task.service'
 import AppError from '../utils/appError'
+import mongodb from 'mongodb'
 
 export const createTaskHandler = async (
   req: Request<{}, {}, CreateTaskInput>,
@@ -22,9 +23,9 @@ export const createTaskHandler = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user.id
+    const userId = res.locals.user.id
 
-    const task = await createTask({ input: req.body, user_id })
+    const task = await createTask({ input: req.body, user_id: userId })
 
     res.status(201).json({
       status: 'success',
@@ -66,15 +67,15 @@ export const getAllTaskOfUserByQuerHandler = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user.id
+    const userId = res.locals.user.id
 
     const { search, status } = req.query
 
-    if (!user_id) {
+    if (!userId) {
       return next(new AppError('User with that ID not found', 404))
     }
 
-    const tasks = await findAllTaskByUser(user_id)
+    const tasks = await findAllTaskByUser(userId)
 
     const filteredTasks = filterTasksByStatusAndSearch(tasks, status, search)
 
@@ -122,16 +123,37 @@ export const deleteTaskHandler = async (
   next: NextFunction
 ) => {
   try {
-    const task = await findOneAndDelete({ _id: req.params.taskId })
+    const userId = res.locals.user.id
+    const taskId = req.params.taskId
+
+    const task = await findTaskById(taskId)
 
     if (!task) {
       return next(new AppError('Task with that ID not found', 404))
     }
 
-    res.status(204).json({
-      status: 'success',
-      message: 'Task deleted successfully',
-    })
+    if (task.user_id !== userId) {
+      return next(
+        new AppError('You are not authorized to perform this action', 401)
+      )
+    }
+
+    const deletedTask: mongodb.DeleteResult = await deleteTaskById(
+      taskId,
+      userId
+    )
+
+    if (deletedTask.deletedCount) {
+      res.status(204).json({
+        status: 'success',
+        message: 'Task deleted successfully',
+      })
+    } else {
+      res.status(500).json({
+        status: 'fail',
+        message: 'Something went wrong',
+      })
+    }
   } catch (err: any) {
     next(err)
   }

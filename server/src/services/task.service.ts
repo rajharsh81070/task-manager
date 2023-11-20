@@ -5,8 +5,8 @@ export const filterTasksByStatusAndSearch = (
   tasks: Task[],
   status?: string,
   search?: string
-) => {
-  return tasks.filter((task) => {
+) =>
+  tasks.filter((task) => {
     const hasStatus = status ? task.status === status : true
     const hasSearch = search
       ? task.title.toLowerCase().includes(search.toLowerCase())
@@ -14,7 +14,6 @@ export const filterTasksByStatusAndSearch = (
 
     return hasStatus && hasSearch
   })
-}
 
 export const createTask = async ({
   input,
@@ -22,9 +21,7 @@ export const createTask = async ({
 }: {
   input: Partial<Task>
   user_id: string
-}) => {
-  return taskModel.create({ ...input, user: user_id })
-}
+}) => await taskModel.create({ ...input, user: user_id })
 
 export const findTaskById = async (id: string) =>
   await taskModel
@@ -49,9 +46,7 @@ export const findAllTaskByUser = async (user_id: string) => {
 export const findTask = async (
   query: FilterQuery<Task>,
   options: QueryOptions = {}
-) => {
-  return await taskModel.findOne(query, {}, options).lean()
-}
+) => await taskModel.findOne(query, {}, options).lean()
 
 export const findAndUpdateTask = async (
   query: FilterQuery<Task>,
@@ -66,6 +61,14 @@ export const findAndUpdateTask = async (
 export const findOneAndDelete = async (
   query: FilterQuery<Task>,
   options: QueryOptions = {}
-) => {
-  return await taskModel.findOneAndDelete(query, options).lean().exec()
-}
+) => await taskModel.findOneAndDelete(query, options).lean().exec()
+
+export const deleteTaskById = async (taskId: string, userId: string) =>
+  await taskModel
+    .deleteOne({
+      id: taskId,
+      user: userId,
+    })
+    .lean()
+    .exec()
+    .then((task) => JSON.parse(JSON.stringify(task)))

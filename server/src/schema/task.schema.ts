@@ -7,9 +7,6 @@ export const createTaskSchema = object({
     title: string({
       required_error: 'Title is required',
     }),
-    dueData: string().datetime({
-      message: 'Invalid due date format',
-    }),
     status: string()
       .refine((val) => Object.keys(TaskStatus).includes(val), {
         message: 'Invalid status',
@@ -19,8 +16,7 @@ export const createTaskSchema = object({
       .datetime({
         message: 'Invalid due date format',
       })
-      .transform((val) => new Date(val))
-      .optional(),
+      .transform((val) => new Date(val)),
   }),
 })
 
@@ -32,7 +28,9 @@ const taskParams = {
 
 export const getTasksByQuerySchema = object({
   query: object({
-    search: string(),
+    search: string().refine((val) => Object.keys(TaskStatus).includes(val), {
+      message: 'Invalid status',
+    }),
     status: string(),
   }).partial(),
 })
