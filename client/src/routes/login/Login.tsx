@@ -89,8 +89,8 @@ const Login = () => {
   }
 
   return (
-    <div className="bg-[#131319] flex justify-center flex-col items-center min-h-screen w-full h-full">
-      <div className="flex flex-col items-center justify-center gap-12">
+    <div className="bg-slate-100 flex justify-center flex-col items-center min-h-screen w-full h-full">
+      <div className="md:w-[480px] flex flex-col items-center justify-center gap-12">
         <LoginBox
           isLoading={isLoading}
           handleLogin={handleLogin}

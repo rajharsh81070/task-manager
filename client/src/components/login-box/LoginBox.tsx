@@ -16,17 +16,17 @@ const LoginBox = (props: LoginBoxProps) => {
   const { handleLogin, handleInputChange, formData, isLoading } = props
 
   return (
-    <div className="m-3 sm:flex-shrink-0 bg-[#27292D] border-2 rounded-lg border-solid border-[#969696] flex py-10 px-6 justify-center">
-      <div className="flex flex-col gap-11">
+    <div className="w-full m-3 sm:flex-shrink-0 bg-slate-200 border-2 rounded-lg border-solid border-[#969696] flex py-10 px-6 justify-center">
+      <div className="flex w-full flex-col gap-6">
         <div className="flex flex-col items-center justify-center gap-2">
-          <p className="font-medium text-sm text-[#6B6C70] not-italic tracking-[0.42px]">
+          <p className="font-bold text-lg text-slate-600 uppercase">
             WELCOME BACK
           </p>
-          <p className="font-semibold text-lg text-[#FFF] not-italic tracking-[0.42px]">
+          <p className="font-bold text-base text-slate-600">
             Log into your account
           </p>
         </div>
-        <div className="flex flex-col input-fields">
+        <div className="flex w-full flex-col input-fields">
           <label>
             Email
             <input
@@ -58,12 +58,12 @@ const LoginBox = (props: LoginBoxProps) => {
               type="submit"
               isLoading={isLoading}
             />
-            <div className="flex">
-              <p className="text-[#7F8084] text-sm font-medium">
+            <div className="flex self-center">
+              <p className="text-slate-600 text-sm font-medium">
                 Not registered yet?&nbsp;
               </p>
               <Link
-                className="text-[#C5C7CA] text-sm font-medium"
+                className="text-slate-500 hover:underline text-sm font-medium"
                 to="/register"
               >
                 Register →
