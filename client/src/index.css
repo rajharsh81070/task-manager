@@ -42,12 +42,12 @@
   .input-styles::placeholder {
     @apply text-slate-400;
   }
-  .input-field input,
-  .input-field textarea,
-  .input-field select {
+  .input-fields input,
+  .input-fields textarea,
+  .input-fields select {
     @apply input-styles mt-1;
   }
-  .input-field label {
+  .input-fields label {
     @apply mb-4 text-slate-600;
   }
   .bar-progress {
@@ -56,10 +56,10 @@
   .bar-progress > div {
     @apply bg-violet-600 h-full;
   }
-  .itemDirectory > .buttonsDir {
+  .item-directory > .buttons-dir {
     @apply xl:opacity-0 transition opacity-100;
   }
-  .itemDirectory:hover > .buttonsDir {
+  .item-directory:hover > .buttons-dir {
     @apply opacity-100;
   }
 }
